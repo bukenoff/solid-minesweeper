@@ -1,0 +1,31 @@
+.cell-root {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  background-color: #bdbdbd;
+  border-bottom: solid 3px #7b7b7b;
+  border-right: solid 3px #7b7b7b;
+  border-top: solid 3px #fff;
+  border-left: solid 3px #fff;
+  font-weight: bold;
+}
+
+.one .cell-root:active {
+  transform: scale(0.9);
+}
+
+.cell-open {
+  border: solid 1px #7b7b7b;
+}
+
+.cell-open:active {
+  transform: none;
+}
+
+.cell-exploded {
+  background-image: url(https://cardgames.io/minesweeper/images/mine.svg);
+}
+
+.cell-flagged {
+  background-image: url(https://cardgames.io/minesweeper/images/flag.svg);
+}
