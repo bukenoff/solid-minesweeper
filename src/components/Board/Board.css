@@ -1,0 +1,12 @@
+.board-root {
+  position: relative;
+  display: inline-block;
+}
+
+.board-overlay {
+  position: absolute;
+  background: pink;
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
+}

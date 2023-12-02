@@ -589,15 +589,22 @@ const MOCK_BOARD = [
   ],
 ];
 
-export const BoardContext = createContext();
+export const BoardContext = createContext<any>();
 
 export function BoardProvider(props: { children: JSXElement }) {
   const [board, setBoard] = createStore(MOCK_BOARD);
+  const [gameOver, setGameOver] = createSignal(false);
   const value = [
     board,
+    gameOver,
     {
       open(r: number, c: number) {
+        if (gameOver()) return;
+
         setBoard(r, c, "is_open", true);
+        if (board[r][c].has_bomb) {
+          setGameOver(true);
+        }
 
         console.log("hello mum", r, c);
         console.log("board is", board);
