@@ -3,7 +3,7 @@ import { For, Show } from "solid-js";
 import { BoardProvider } from "~/contexts";
 import { useBoard } from "~/hooks";
 
-import "./Board.css";
+import styles from "./Board.module.css";
 import { Cell } from "../Cell";
 import { Row } from "../Row";
 
@@ -12,9 +12,9 @@ export const Board = () => {
 
   return (
     <BoardProvider>
-      <div class="board-root">
+      <div class={styles["container"]}>
         <Show when={gameOver()}>
-          <div class="board-overlay"></div>
+          <div class={styles["overlay"]} />
         </Show>
         <For each={board}>
           {(row) => (

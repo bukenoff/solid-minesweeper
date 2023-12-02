@@ -1,9 +1,9 @@
-.board-root {
+.container {
   position: relative;
   display: inline-block;
 }
 
-.board-overlay {
+.overlay {
   position: absolute;
   background: pink;
   opacity: 0.5;

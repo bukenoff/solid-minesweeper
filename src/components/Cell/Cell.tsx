@@ -2,7 +2,7 @@ import { Component, createSignal, Show } from "solid-js";
 
 import { getColor } from "~/utils/helpers";
 
-import "./Cell.css";
+import styles from "./Cell.module.css";
 
 type CellProps = {
   has_bomb: boolean;
@@ -32,11 +32,11 @@ export const Cell: Component<CellProps> = (props) => {
   return (
     <button
       style={getColor(props.bombs_around)}
-      class="cell-root"
+      class={styles["container"]}
       classList={{
-        "cell-open": props.is_open,
-        "cell-exploded": exploded(),
-        "cell-flagged": flagged(),
+        [styles["open"]]: props.is_open,
+        [styles["exploded"]]: exploded(),
+        [styles["flagged"]]: flagged(),
       }}
       onClick={onClick}
       onContextMenu={onContextMenu}

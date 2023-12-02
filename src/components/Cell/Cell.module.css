@@ -1,4 +1,4 @@
-.cell-root {
+.container {
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -10,22 +10,22 @@
   font-weight: bold;
 }
 
-.one .cell-root:active {
+.container:active {
   transform: scale(0.9);
 }
 
-.cell-open {
+.open {
   border: solid 1px #7b7b7b;
 }
 
-.cell-open:active {
+.open:active {
   transform: none;
 }
 
-.cell-exploded {
+.exploded {
   background-image: url(https://cardgames.io/minesweeper/images/mine.svg);
 }
 
-.cell-flagged {
+.flagged {
   background-image: url(https://cardgames.io/minesweeper/images/flag.svg);
 }
