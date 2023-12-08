@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container span {
+  width: 30px;
+}
+
+.container button {
+  cursor: pointer;
+}
