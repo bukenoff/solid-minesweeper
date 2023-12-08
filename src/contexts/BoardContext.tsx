@@ -1,614 +1,80 @@
 import { createContext, createSignal, JSXElement } from "solid-js";
 import { createStore } from "solid-js/store";
 
-const MOCK_BOARD = [
-  [
-    {
-      has_bomb: false,
-      bombs_around: 1,
-      is_open: false,
-      row: 0,
-      col: 0,
-    },
-    {
-      has_bomb: true,
-      bombs_around: 0,
-      is_open: false,
-      row: 0,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 1,
-      is_open: false,
-      row: 0,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 0,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 0,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 0,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 0,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 0,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 0,
-      col: 8,
-    },
-  ],
-  [
-    {
-      has_bomb: false,
-      bombs_around: 1,
-      is_open: false,
-      row: 1,
-      col: 0,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 1,
-      is_open: false,
-      row: 1,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 1,
-      is_open: false,
-      row: 1,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 1,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 1,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 1,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 1,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 1,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 1,
-      col: 8,
-    },
-  ],
-  [
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 0,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 2,
-      col: 8,
-    },
-  ],
-  [
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 0,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 3,
-      col: 8,
-    },
-  ],
-  [
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 0,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 4,
-      col: 8,
-    },
-  ],
-  [
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 0,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 5,
-      col: 8,
-    },
-  ],
-  [
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 0,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 6,
-      col: 8,
-    },
-  ],
-  [
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 0,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 7,
-      col: 8,
-    },
-  ],
-  [
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 0,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 1,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 2,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 3,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 4,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 5,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 6,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 7,
-    },
-    {
-      has_bomb: false,
-      bombs_around: 0,
-      is_open: false,
-      row: 8,
-      col: 8,
-    },
-  ],
-];
+import { makeBoard } from "~/const/mocks";
+
+const getNeighborCells = (
+  row: number,
+  col: number,
+  board: ReturnType<typeof makeBoard>
+) => {
+  const maxRow = board.length - 1;
+  const maxCol = board[0].length - 1;
+  const neighbors: { row: number; col: number }[] = [];
+
+  if (row > 0) {
+    neighbors.push({ row: row - 1, col });
+    if (col > 0) {
+      neighbors.push({ row: row - 1, col: col - 1 });
+    }
+    if (col < maxCol) {
+      neighbors.push({ row: row - 1, col: col + 1 });
+    }
+  }
+  if (row < maxRow) {
+    neighbors.push({ row: row + 1, col });
+    if (col > 0) {
+      neighbors.push({ row: row + 1, col: col - 1 });
+    }
+    if (col < maxCol) {
+      neighbors.push({ row: row + 1, col: col + 1 });
+    }
+  }
+  if (col > 0) {
+    neighbors.push({ row, col: col - 1 });
+  }
+  if (col < maxCol) {
+    neighbors.push({ row, col: col + 1 });
+  }
+
+  return neighbors;
+};
 
 export const BoardContext = createContext<any>();
 
 export function BoardProvider(props: { children: JSXElement }) {
-  const [board, setBoard] = createStore(MOCK_BOARD);
+  const [board, setBoard] = createStore(makeBoard());
   const [gameOver, setGameOver] = createSignal(false);
+  const [minesLeft, setMinesLeft] = createSignal(10);
+
+  function openCell(row: number, col: number) {
+    if (gameOver() || board[row][col].is_open) return;
+    if (board[row][col].has_bomb) {
+      setGameOver(true);
+    }
+
+    if (!board[row][col].bombs_around) {
+      getNeighborCells(row, col, board).forEach((position) => {
+        setTimeout(() => openCell(position.row, position.col), 50);
+      });
+    }
+
+    setBoard(row, col, "is_open", true);
+  }
+
+  function restart() {
+    setGameOver(false);
+    setBoard(makeBoard());
+    setMinesLeft(10);
+  }
+
   const value = [
     board,
     gameOver,
+    minesLeft,
     {
-      open(r: number, c: number) {
-        if (gameOver()) return;
-
-        setBoard(r, c, "is_open", true);
-        if (board[r][c].has_bomb) {
-          setGameOver(true);
-        }
-
-        console.log("hello mum", r, c);
-        console.log("board is", board);
-      },
+      openCell,
+      restart,
     },
   ];
 
