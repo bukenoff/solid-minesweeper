@@ -18,7 +18,7 @@ export const Cell: Component<CellProps> = (props) => {
   const [flagged, setFlagged] = createSignal(false);
 
   const onClick = () => {
-    if (props.is_open) return;
+    if (props.is_open || flagged()) return;
     props.onOpen(props.row, props.col);
     props.has_bomb && !exploded() && setExploded(true);
   };

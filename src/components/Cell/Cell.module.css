@@ -29,3 +29,6 @@
 .flagged {
   background-image: url(https://cardgames.io/minesweeper/images/flag.svg);
 }
+.flagged:active {
+  transform: none;
+}
