@@ -6,34 +6,38 @@ import { useBoard } from "~/hooks";
 import styles from "./Board.module.css";
 import { Cell } from "../Cell";
 import { Row } from "../Row";
+import { ProgressPanel } from "../ProgressPanel";
 
 export const Board = () => {
-  const [board, gameOver, { open }] = useBoard();
+  const [board, gameOver, minesLeft, { openCell, restart }] = useBoard();
 
   return (
     <BoardProvider>
       <div class={styles["container"]}>
-        <Show when={gameOver()}>
-          <div class={styles["overlay"]} />
-        </Show>
-        <For each={board}>
-          {(row) => (
-            <Row>
-              <For each={row}>
-                {(cell) => (
-                  <Cell
-                    has_bomb={cell.has_bomb}
-                    bombs_around={cell.bombs_around}
-                    is_open={cell.is_open}
-                    row={cell.row}
-                    col={cell.col}
-                    onOpen={open}
-                  />
-                )}
-              </For>
-            </Row>
-          )}
-        </For>
+        <ProgressPanel restart={restart} minesLeft={minesLeft} />
+        <div class={styles["rows"]}>
+          <Show when={gameOver()}>
+            <div class={styles["overlay"]} />
+          </Show>
+          <For each={board}>
+            {(row) => (
+              <Row>
+                <For each={row}>
+                  {(cell) => (
+                    <Cell
+                      has_bomb={cell.has_bomb}
+                      bombs_around={cell.bombs_around}
+                      is_open={cell.is_open}
+                      row={cell.row}
+                      col={cell.col}
+                      onOpen={openCell}
+                    />
+                  )}
+                </For>
+              </Row>
+            )}
+          </For>
+        </div>
       </div>
     </BoardProvider>
   );

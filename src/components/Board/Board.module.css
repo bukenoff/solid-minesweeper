@@ -1,6 +1,9 @@
 .container {
-  position: relative;
   display: inline-block;
+}
+
+.rows {
+  position: relative;
 }
 
 .overlay {
