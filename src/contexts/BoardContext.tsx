@@ -56,10 +56,10 @@ export function BoardProvider(props: { children: JSXElement }) {
     setMinesLeft((count) => {
       if (flagged) {
         setBoard(row, col, "is_flagged", true);
-      } else {
-        setBoard(row, col, "is_flagged", false);
+        return count - 1;
       }
-      return flagged ? count - 1 : count + 1;
+      setBoard(row, col, "is_flagged", false);
+      return count + 1;
     });
   }
 
