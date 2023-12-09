@@ -6,3 +6,5 @@ export type CellType = {
   col: number;
   is_flagged?: boolean;
 };
+
+export type BoardType = CellType[][];

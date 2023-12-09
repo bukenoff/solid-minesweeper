@@ -1,33 +1,8 @@
 import { createContext, createSignal, JSXElement } from "solid-js";
 import { createStore } from "solid-js/store";
 
-import { makeBoard } from "~/const/mocks";
-
-const getNeighborCells = (
-  row: number,
-  col: number,
-  board: ReturnType<typeof makeBoard>
-) => {
-  const maxRow = board.length - 1;
-  const maxCol = board[0].length - 1;
-
-  return [
-    { row: row - 1, col },
-    { row: row - 1, col: col - 1 },
-    { row: row - 1, col: col + 1 },
-    { row: row + 1, col },
-    { row: row + 1, col: col - 1 },
-    { row: row + 1, col: col + 1 },
-    { row, col: col - 1 },
-    { row, col: col + 1 },
-  ].filter(
-    (neighbor) =>
-      neighbor.row !== -1 &&
-      neighbor.col !== -1 &&
-      neighbor.row !== maxRow + 1 &&
-      neighbor.col !== maxCol + 1
-  );
-};
+import { makeBoard } from "~/const";
+import { getNeighborCells } from "~/utils";
 
 export const BoardContext = createContext<any>();
 
