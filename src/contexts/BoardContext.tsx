@@ -10,34 +10,23 @@ const getNeighborCells = (
 ) => {
   const maxRow = board.length - 1;
   const maxCol = board[0].length - 1;
-  const neighbors: { row: number; col: number }[] = [];
 
-  if (row > 0) {
-    neighbors.push({ row: row - 1, col });
-    if (col > 0) {
-      neighbors.push({ row: row - 1, col: col - 1 });
-    }
-    if (col < maxCol) {
-      neighbors.push({ row: row - 1, col: col + 1 });
-    }
-  }
-  if (row < maxRow) {
-    neighbors.push({ row: row + 1, col });
-    if (col > 0) {
-      neighbors.push({ row: row + 1, col: col - 1 });
-    }
-    if (col < maxCol) {
-      neighbors.push({ row: row + 1, col: col + 1 });
-    }
-  }
-  if (col > 0) {
-    neighbors.push({ row, col: col - 1 });
-  }
-  if (col < maxCol) {
-    neighbors.push({ row, col: col + 1 });
-  }
-
-  return neighbors;
+  return [
+    { row: row - 1, col },
+    { row: row - 1, col: col - 1 },
+    { row: row - 1, col: col + 1 },
+    { row: row + 1, col },
+    { row: row + 1, col: col - 1 },
+    { row: row + 1, col: col + 1 },
+    { row, col: col - 1 },
+    { row, col: col + 1 },
+  ].filter(
+    (neighbor) =>
+      neighbor.row !== -1 &&
+      neighbor.col !== -1 &&
+      neighbor.row !== maxRow + 1 &&
+      neighbor.col !== maxCol + 1
+  );
 };
 
 export const BoardContext = createContext<any>();
@@ -48,7 +37,8 @@ export function BoardProvider(props: { children: JSXElement }) {
   const [minesLeft, setMinesLeft] = createSignal(10);
 
   function openCell(row: number, col: number) {
-    if (gameOver() || board[row][col].is_open) return;
+    if (gameOver() || board[row][col].is_open || board[row][col].is_flagged)
+      return;
     if (board[row][col].has_bomb) {
       setGameOver(true);
     }
@@ -60,6 +50,17 @@ export function BoardProvider(props: { children: JSXElement }) {
     }
 
     setBoard(row, col, "is_open", true);
+  }
+
+  function flagCell(row: number, col: number, flagged: boolean) {
+    setMinesLeft((count) => {
+      if (flagged) {
+        setBoard(row, col, "is_flagged", true);
+      } else {
+        setBoard(row, col, "is_flagged", false);
+      }
+      return flagged ? count - 1 : count + 1;
+    });
   }
 
   function restart() {
@@ -75,6 +76,7 @@ export function BoardProvider(props: { children: JSXElement }) {
     {
       openCell,
       restart,
+      flagCell,
     },
   ];
 

@@ -11,6 +11,7 @@ type CellProps = {
   row: number;
   col: number;
   onOpen: (row: number, col: number) => void;
+  flagCell: (row: number, col: number, flagged: boolean) => void;
 };
 
 export const Cell: Component<CellProps> = (props) => {
@@ -26,7 +27,10 @@ export const Cell: Component<CellProps> = (props) => {
   const onContextMenu = (e: MouseEvent) => {
     e.preventDefault();
     if (props.is_open) return;
-    setFlagged((value) => !value);
+    setFlagged((value) => {
+      props.flagCell(props.row, props.col, !value);
+      return !value;
+    });
   };
 
   return (

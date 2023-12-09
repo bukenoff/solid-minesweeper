@@ -9,7 +9,8 @@ import { Row } from "../Row";
 import { ProgressPanel } from "../ProgressPanel";
 
 export const Board = () => {
-  const [board, gameOver, minesLeft, { openCell, restart }] = useBoard();
+  const [board, gameOver, minesLeft, { openCell, flagCell, restart }] =
+    useBoard();
 
   return (
     <BoardProvider>
@@ -31,6 +32,7 @@ export const Board = () => {
                       row={cell.row}
                       col={cell.col}
                       onOpen={openCell}
+                      flagCell={flagCell}
                     />
                   )}
                 </For>

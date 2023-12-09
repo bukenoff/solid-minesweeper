@@ -1,4 +1,6 @@
-export function makeBoard() {
+import type { CellType } from "~/models";
+
+export function makeBoard(): CellType[][] {
   return [
     [
       {
