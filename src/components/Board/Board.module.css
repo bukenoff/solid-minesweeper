@@ -8,8 +8,15 @@
 
 .overlay {
   position: absolute;
-  background: pink;
   opacity: 0.5;
   height: 100%;
   width: 100%;
+}
+
+.loss {
+  background: pink;
+}
+
+.victory {
+  background: green;
 }

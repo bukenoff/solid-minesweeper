@@ -8,3 +8,5 @@ export type CellType = {
 };
 
 export type BoardType = CellType[][];
+
+export type GameStatus = "pending" | "playing" | "victory" | "loss";

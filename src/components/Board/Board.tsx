@@ -9,16 +9,22 @@ import { Row } from "../Row";
 import { ProgressPanel } from "../ProgressPanel";
 
 export const Board = () => {
-  const [board, gameOver, minesLeft, { openCell, flagCell, restart }] =
+  const [board, status, minesLeft, time, { openCell, flagCell, restart }] =
     useBoard();
 
   return (
     <BoardProvider>
       <div class={styles["container"]}>
-        <ProgressPanel restart={restart} minesLeft={minesLeft} />
+        <ProgressPanel restart={restart} minesLeft={minesLeft} time={time} />
         <div class={styles["rows"]}>
-          <Show when={gameOver()}>
-            <div class={styles["overlay"]} />
+          <Show when={status() === "loss" || status() === "victory"}>
+            <div
+              class={styles["overlay"]}
+              classList={{
+                [styles["loss"]]: status() === "loss",
+                [styles["victory"]]: status() === "victory",
+              }}
+            />
           </Show>
           <For each={board}>
             {(row) => (

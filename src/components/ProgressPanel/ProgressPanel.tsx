@@ -4,6 +4,7 @@ import styles from "./ProgressPanel.module.css";
 type ProgressPanelProps = {
   restart: () => void;
   minesLeft: Accessor<number>;
+  time: Accessor<number>;
 };
 
 export const ProgressPanel: Component<ProgressPanelProps> = (props) => {
@@ -11,7 +12,7 @@ export const ProgressPanel: Component<ProgressPanelProps> = (props) => {
     <div class={styles["container"]}>
       <span>{props.minesLeft()}</span>
       <button onClick={props.restart}>r</button>
-      <span>000</span>
+      <span>{props.time()}</span>
     </div>
   );
 };
