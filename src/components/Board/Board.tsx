@@ -29,6 +29,7 @@ export const Board = () => {
                       has_bomb={cell.has_bomb}
                       bombs_around={cell.bombs_around}
                       is_open={cell.is_open}
+                      is_flagged={cell.is_flagged}
                       row={cell.row}
                       col={cell.col}
                       onOpen={openCell}

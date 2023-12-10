@@ -8,6 +8,7 @@ type CellProps = {
   has_bomb: boolean;
   bombs_around: number;
   is_open: boolean;
+  is_flagged?: boolean;
   row: number;
   col: number;
   onOpen: (row: number, col: number) => void;
@@ -16,10 +17,9 @@ type CellProps = {
 
 export const Cell: Component<CellProps> = (props) => {
   const [exploded, setExploded] = createSignal(false);
-  const [flagged, setFlagged] = createSignal(false);
 
   const onClick = () => {
-    if (props.is_open || flagged()) return;
+    if (props.is_open || props.is_flagged) return;
     props.onOpen(props.row, props.col);
     props.has_bomb && !exploded() && setExploded(true);
   };
@@ -27,10 +27,7 @@ export const Cell: Component<CellProps> = (props) => {
   const onContextMenu = (e: MouseEvent) => {
     e.preventDefault();
     if (props.is_open) return;
-    setFlagged((value) => {
-      props.flagCell(props.row, props.col, !value);
-      return !value;
-    });
+    props.flagCell(props.row, props.col, !props.is_flagged);
   };
 
   return (
@@ -40,7 +37,7 @@ export const Cell: Component<CellProps> = (props) => {
       classList={{
         [styles["open"]]: props.is_open,
         [styles["exploded"]]: exploded(),
-        [styles["flagged"]]: flagged(),
+        [styles["flagged"]]: props.is_flagged,
       }}
       onClick={onClick}
       onContextMenu={onContextMenu}
