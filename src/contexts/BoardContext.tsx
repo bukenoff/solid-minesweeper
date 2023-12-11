@@ -69,6 +69,7 @@ export function BoardProvider(props: { children: JSXElement }) {
     setMinesLeft(1);
     setTime(0);
     setCellsLeft(9 * 9 - 1);
+    intervalId && clearInterval(intervalId);
   }
 
   const value = [
