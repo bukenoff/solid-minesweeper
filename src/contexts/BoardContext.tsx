@@ -68,6 +68,7 @@ export function BoardProvider(props: { children: JSXElement }) {
     setBoard(makeBoard());
     setMinesLeft(1);
     setTime(0);
+    setCellsLeft(9 * 9 - 1);
   }
 
   const value = [
