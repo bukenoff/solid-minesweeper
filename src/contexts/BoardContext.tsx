@@ -7,16 +7,17 @@ import {
 import { createStore } from "solid-js/store";
 
 import { makeBoard } from "~/const";
-import type { GameStatus } from "~/models";
+import type { BoardType, GameStatus } from "~/models";
 import { getNeighborCells } from "~/utils";
+import { getMinesCoordinates, makeEmptyBoard, plantMines } from "~/utils/board";
 
 export const BoardContext = createContext<any>();
 
 export function BoardProvider(props: { children: JSXElement }) {
-  const [board, setBoard] = createStore(makeBoard());
+  const [board, setBoard] = createStore(makeEmptyBoard(9, 9));
   const [status, setStatus] = createSignal<GameStatus>("pending");
-  const [minesLeft, setMinesLeft] = createSignal(1);
-  const [cellsLeft, setCellsLeft] = createSignal(9 * 9 - 1);
+  const [minesLeft, setMinesLeft] = createSignal(10);
+  const [cellsLeft, setCellsLeft] = createSignal(9 * 9 - 10);
   const [time, setTime] = createSignal(0);
   let intervalId: NodeJS.Timer;
 
@@ -24,7 +25,8 @@ export function BoardProvider(props: { children: JSXElement }) {
     if (!cellsLeft() && status() === "playing") endGame("victory");
   });
 
-  function startGame() {
+  function startGame(row: number, col: number, board: BoardType) {
+    plantMines(getMinesCoordinates(9, 9, 10, { row, col }), setBoard, board);
     setStatus("playing");
     intervalId = setInterval(() => setTime((value) => value + 1), 1000);
   }
@@ -36,7 +38,7 @@ export function BoardProvider(props: { children: JSXElement }) {
 
   function openCell(row: number, col: number) {
     const clickedCell = board[row][col];
-    if (status() === "pending") startGame();
+    if (status() === "pending") startGame(row, col, board);
 
     if (status() === "loss" || clickedCell.is_open || clickedCell.is_flagged)
       return;
@@ -66,9 +68,9 @@ export function BoardProvider(props: { children: JSXElement }) {
   function restart() {
     setStatus("pending");
     setBoard(makeBoard());
-    setMinesLeft(1);
+    setMinesLeft(10);
     setTime(0);
-    setCellsLeft(9 * 9 - 1);
+    setCellsLeft(9 * 9 - 10);
     intervalId && clearInterval(intervalId);
   }
 
