@@ -5,6 +5,7 @@ import {
   JSXElement,
 } from "solid-js";
 import { createStore } from "solid-js/store";
+import { DIFFICULTY } from "~/const/board";
 
 import type { BoardType, GameStatus } from "~/models";
 import { getNeighborCells } from "~/utils";
@@ -13,10 +14,15 @@ import { getMinesCoordinates, makeEmptyBoard, plantMines } from "~/utils/board";
 export const BoardContext = createContext<any>();
 
 export function BoardProvider(props: { children: JSXElement }) {
-  const [board, setBoard] = createStore(makeEmptyBoard(9, 9));
+  const [difficulty, setDifficulty] = createSignal(DIFFICULTY["easy"]);
+  const [board, setBoard] = createStore(
+    makeEmptyBoard(difficulty().rows, difficulty().cols)
+  );
   const [status, setStatus] = createSignal<GameStatus>("pending");
-  const [minesLeft, setMinesLeft] = createSignal(10);
-  const [cellsLeft, setCellsLeft] = createSignal(9 * 9 - 10);
+  const [minesLeft, setMinesLeft] = createSignal(difficulty().mines);
+  const [cellsLeft, setCellsLeft] = createSignal(
+    difficulty().rows * difficulty().cols - difficulty().mines
+  );
   const [time, setTime] = createSignal(0);
   let intervalId: NodeJS.Timer;
 
@@ -25,7 +31,16 @@ export function BoardProvider(props: { children: JSXElement }) {
   });
 
   function startGame(row: number, col: number, board: BoardType) {
-    plantMines(getMinesCoordinates(9, 9, 10, { row, col }), setBoard, board);
+    plantMines(
+      getMinesCoordinates(
+        difficulty().rows,
+        difficulty().cols,
+        difficulty().mines,
+        { row, col }
+      ),
+      setBoard,
+      board
+    );
     setStatus("playing");
     intervalId = setInterval(() => setTime((value) => value + 1), 1000);
   }
@@ -66,10 +81,10 @@ export function BoardProvider(props: { children: JSXElement }) {
 
   function restart() {
     setStatus("pending");
-    setBoard(makeBoard());
-    setMinesLeft(10);
+    setBoard(makeEmptyBoard(difficulty().rows, difficulty().cols));
+    setMinesLeft(difficulty().mines);
     setTime(0);
-    setCellsLeft(9 * 9 - 10);
+    setCellsLeft(difficulty().rows * difficulty().cols - difficulty().mines);
     intervalId && clearInterval(intervalId);
   }
 
