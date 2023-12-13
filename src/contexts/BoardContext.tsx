@@ -6,7 +6,6 @@ import {
 } from "solid-js";
 import { createStore } from "solid-js/store";
 
-import { makeBoard } from "~/const";
 import type { BoardType, GameStatus } from "~/models";
 import { getNeighborCells } from "~/utils";
 import { getMinesCoordinates, makeEmptyBoard, plantMines } from "~/utils/board";
