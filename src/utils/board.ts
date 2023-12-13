@@ -48,6 +48,8 @@ export function plantMines(
     const neighbors = getNeighborCells(+row, +col, board);
 
     neighbors.forEach((position) => {
+      if (board[position.row][position.col].has_bomb) return;
+
       setBoard(
         position.row,
         position.col,
