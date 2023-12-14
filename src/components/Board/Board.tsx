@@ -7,14 +7,25 @@ import styles from "./Board.module.css";
 import { Cell } from "../Cell";
 import { Row } from "../Row";
 import { ProgressPanel } from "../ProgressPanel";
+import { SettingsPanel } from "../SettingsPanel";
 
 export const Board = () => {
-  const [board, status, minesLeft, time, { openCell, flagCell, restart }] =
-    useBoard();
+  const [
+    board,
+    status,
+    minesLeft,
+    time,
+    difficulty,
+    { openCell, flagCell, restart, changeDifficulty },
+  ] = useBoard();
 
   return (
     <BoardProvider>
       <div class={styles["container"]}>
+        <SettingsPanel
+          difficulty={difficulty}
+          changeDifficulty={changeDifficulty}
+        />
         <ProgressPanel restart={restart} minesLeft={minesLeft} time={time} />
         <div class={styles["rows"]}>
           <Show when={status() === "loss" || status() === "victory"}>

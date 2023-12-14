@@ -88,15 +88,22 @@ export function BoardProvider(props: { children: JSXElement }) {
     intervalId && clearInterval(intervalId);
   }
 
+  function changeDifficulty(key: keyof typeof DIFFICULTY) {
+    setDifficulty(DIFFICULTY[key]);
+    restart();
+  }
+
   const value = [
     board,
     status,
     minesLeft,
     time,
+    difficulty,
     {
       openCell,
       restart,
       flagCell,
+      changeDifficulty,
     },
   ];
 
