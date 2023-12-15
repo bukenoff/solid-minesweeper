@@ -1,4 +1,4 @@
-import type { Component, JSXElement } from "solid-js";
+import type { JSXElement } from "solid-js";
 
 import styles from "./Row.module.css";
 
@@ -6,6 +6,6 @@ type RowProps = {
   children: JSXElement;
 };
 
-export const Row: Component<RowProps> = ({ children }) => {
-  return <div class={styles["container"]}>{children}</div>;
-};
+export function Row(props: RowProps) {
+  return <div class={styles["container"]}>{props.children}</div>;
+}

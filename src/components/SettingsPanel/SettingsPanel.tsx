@@ -1,11 +1,11 @@
-import { Accessor, Component, JSX } from "solid-js";
+import type { Accessor, JSX } from "solid-js";
 
 type SettingsPanelProps = {
   difficulty: Accessor<any>;
   changeDifficulty: (key: string) => void;
 };
 
-export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
+export function SettingsPanel(props: SettingsPanelProps) {
   const onChange: JSX.EventHandlerUnion<HTMLSelectElement, Event> = (e) =>
     props.changeDifficulty(e.currentTarget.value);
 
@@ -23,4 +23,4 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
       </select>
     </div>
   );
-};
+}

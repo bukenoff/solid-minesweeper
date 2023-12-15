@@ -9,7 +9,7 @@ import { Row } from "../Row";
 import { ProgressPanel } from "../ProgressPanel";
 import { SettingsPanel } from "../SettingsPanel";
 
-export const Board = () => {
+export function Board() {
   const [
     board,
     status,
@@ -61,4 +61,4 @@ export const Board = () => {
       </div>
     </BoardProvider>
   );
-};
+}

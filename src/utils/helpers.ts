@@ -5,11 +5,7 @@ export function getColor(count: number) {
   return { color: COLORS[count - 1] };
 }
 
-export const getNeighborCells = (
-  row: number,
-  col: number,
-  board: BoardType
-) => {
+export function getNeighborCells(row: number, col: number, board: BoardType) {
   const maxRow = board.length - 1;
   const maxCol = board[0].length - 1;
 
@@ -29,4 +25,4 @@ export const getNeighborCells = (
       neighbor.row !== maxRow + 1 &&
       neighbor.col !== maxCol + 1
   );
-};
+}

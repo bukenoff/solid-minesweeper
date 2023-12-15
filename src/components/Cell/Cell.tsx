@@ -1,4 +1,4 @@
-import { Component, createSignal, Show } from "solid-js";
+import { createSignal, Show } from "solid-js";
 
 import { getColor } from "~/utils/helpers";
 
@@ -15,7 +15,7 @@ type CellProps = {
   flagCell: (row: number, col: number, flagged: boolean) => void;
 };
 
-export const Cell: Component<CellProps> = (props) => {
+export function Cell(props: CellProps) {
   const [exploded, setExploded] = createSignal(false);
 
   const onClick = () => {
@@ -47,4 +47,4 @@ export const Cell: Component<CellProps> = (props) => {
       </Show>
     </button>
   );
-};
+}

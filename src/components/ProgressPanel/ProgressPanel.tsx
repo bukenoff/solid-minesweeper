@@ -1,4 +1,4 @@
-import { Accessor, Component } from "solid-js";
+import type { Accessor } from "solid-js";
 import styles from "./ProgressPanel.module.css";
 
 type ProgressPanelProps = {
@@ -7,7 +7,7 @@ type ProgressPanelProps = {
   time: Accessor<number>;
 };
 
-export const ProgressPanel: Component<ProgressPanelProps> = (props) => {
+export function ProgressPanel(props: ProgressPanelProps) {
   return (
     <div class={styles["container"]}>
       <span>{props.minesLeft()}</span>
@@ -15,4 +15,4 @@ export const ProgressPanel: Component<ProgressPanelProps> = (props) => {
       <span>{props.time()}</span>
     </div>
   );
-};
+}

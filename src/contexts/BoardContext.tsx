@@ -5,8 +5,8 @@ import {
   JSXElement,
 } from "solid-js";
 import { createStore } from "solid-js/store";
-import { DIFFICULTY } from "~/const/board";
 
+import { DIFFICULTY } from "~/const/board";
 import type { BoardType, GameStatus } from "~/models";
 import { getNeighborCells } from "~/utils";
 import { getMinesCoordinates, makeEmptyBoard, plantMines } from "~/utils/board";
