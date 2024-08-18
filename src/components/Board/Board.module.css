@@ -1,0 +1,22 @@
+.container {
+  display: inline-block;
+}
+
+.rows {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
+}
+
+.loss {
+  background: pink;
+}
+
+.victory {
+  background: green;
+}

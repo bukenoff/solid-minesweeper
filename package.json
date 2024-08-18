@@ -13,13 +13,15 @@
   },
   "license": "MIT",
   "dependencies": {
-    "solid-js": "^1.7.8",
-    "@tauri-apps/api": "^1"
+    "@solidjs/router": "^0.14.3",
+    "@tauri-apps/api": "^1",
+    "solid-js": "1.8.4"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^1",
+    "@types/node": "^18.17.5",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
-    "vite-plugin-solid": "^2.8.0",
-    "@tauri-apps/cli": "^1"
+    "vite-plugin-solid": "^2.8.0"
   }
 }

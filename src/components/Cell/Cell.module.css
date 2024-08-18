@@ -1,0 +1,34 @@
+.container {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  background-color: #bdbdbd;
+  border-bottom: solid 3px #7b7b7b;
+  border-right: solid 3px #7b7b7b;
+  border-top: solid 3px #fff;
+  border-left: solid 3px #fff;
+  font-weight: bold;
+}
+
+.container:active {
+  transform: scale(0.9);
+}
+
+.open {
+  border: solid 1px #7b7b7b;
+}
+
+.open:active {
+  transform: none;
+}
+
+.exploded {
+  background-image: url(https://cardgames.io/minesweeper/images/mine.svg);
+}
+
+.flagged {
+  background-image: url(https://cardgames.io/minesweeper/images/flag.svg);
+}
+.flagged:active {
+  transform: none;
+}
