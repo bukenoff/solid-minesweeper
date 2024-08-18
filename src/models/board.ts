@@ -4,7 +4,7 @@ export type CellType = {
   is_open: boolean;
   row: number;
   col: number;
-  is_flagged?: boolean;
+  is_flagged: boolean;
 };
 
 export type BoardType = CellType[][];

@@ -10,6 +10,7 @@ export function makeEmptyBoard(rows: number, cols: number): BoardType {
       has_bomb: false,
       bombs_around: 0,
       is_open: false,
+      is_flagged: false,
     }));
   });
 }

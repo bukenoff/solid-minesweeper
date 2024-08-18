@@ -28,7 +28,7 @@ export function BoardProvider(props: { children: JSXElement }) {
     difficulty().rows * difficulty().cols - difficulty().mines
   );
   const [time, setTime] = createSignal(0);
-  let intervalId: NodeJS.Timer;
+  let intervalId: NodeJS.Timeout;
 
   createEffect(() => {
     if (!cellsLeft() && status() === "playing") endGame("victory");
@@ -45,6 +45,7 @@ export function BoardProvider(props: { children: JSXElement }) {
       setBoard,
       board
     );
+
     setStatus("playing");
     intervalId = setInterval(() => setTime((value) => value + 1), 1000);
   }
