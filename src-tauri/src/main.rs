@@ -1,10 +1,12 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::collections::{HashMap};
+use std::collections::HashMap;
 
 use rand::Rng;
 
+
+#[derive(Debug)]
 struct Cell {
     row: usize,
     col: usize,
@@ -66,10 +68,8 @@ fn get_mines_coordinates(rows: usize, cols: usize, count: usize, first_click: Po
 }
 
 // TODO: This is kind of verbose, find a way to simplify it
-fn get_neighbor_cells(row: usize, col: usize, board: &Vec<Vec<&mut Cell>>) -> Vec<Position> {
+fn get_neighbor_cells(row: usize, col: usize, max_row: usize, max_col: usize) -> Vec<Position> {
     let mut neighbors: Vec<Position> = Vec::new();
-    let max_row = board.len() - 1;
-    let max_col = board[0].len() - 1;
 
     if row > 0 {
         neighbors.push(Position { row: row - 1, col });
@@ -105,25 +105,26 @@ fn get_neighbor_cells(row: usize, col: usize, board: &Vec<Vec<&mut Cell>>) -> Ve
 }
 
 
-// fn plantMines( coordinates: HashMap<String, (usize, usize)>, board: Vec<Vec<Cell>>) {
-//   for position in coordinates.into_iter() {
-//     let (_, (row, col)) = position;
-//     let neighbors = (+row, +col, board);
-//
-//     neighbors.forEach((position) => {
-//       if (board[position.row][position.col].has_bomb) return;
-//
-//       setBoard(
-//         position.row,
-//         position.col,
-//         "bombs_around",
-//         board[position.row][position.col].bombs_around + 1
-//       );
-//     });
-//
-//     setBoard(+row, +col, "has_bomb", true);
-//   }
-// }
+fn plant_mines(coordinates: HashMap<String, (usize, usize)>, board: &mut Vec<Vec<Cell>>) -> &mut Vec<Vec<Cell>> {
+  for position in coordinates.into_iter() {
+    let (_, (row, col)) = position;
+    let max_row = board.len() - 1;
+    let max_col = board[0].len() - 1;
+    let neighbors = get_neighbor_cells(row, col, max_row, max_col);
+
+    board[row][col].has_bomb = true;
+
+    neighbors.into_iter().for_each(|position| {
+        if board[position.row][position.col].has_bomb {
+            return;
+        }
+
+        board[position.row][position.col].bombs_around += 1;
+    });
+  }
+
+    return board;
+}
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -132,6 +133,13 @@ fn greet(name: &str) -> String {
 }
 
 fn main() {
+    let mut empty_board = make_empty_board(9, 9);
+    let coordinates = get_mines_coordinates(9, 9, 9, Position{row:1,col:1});
+
+    let new_board = plant_mines(coordinates, &mut empty_board);
+
+    println!("board is {:?}", new_board);
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
