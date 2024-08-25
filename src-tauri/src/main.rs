@@ -65,6 +65,46 @@ fn get_mines_coordinates(rows: usize, cols: usize, count: usize, first_click: Po
    return coordinates;
 }
 
+// TODO: This is kind of verbose, find a way to simplify it
+fn get_neighbor_cells(row: usize, col: usize, board: &Vec<Vec<&mut Cell>>) -> Vec<Position> {
+    let mut neighbors: Vec<Position> = Vec::new();
+    let max_row = board.len() - 1;
+    let max_col = board[0].len() - 1;
+
+    if row > 0 {
+        neighbors.push(Position { row: row - 1, col });
+    
+        if col > 0 {
+           neighbors.push(Position { row: row - 1, col: col - 1 });
+        }
+        if col < max_col {
+           neighbors.push(Position { row: row - 1, col: col + 1 });
+        }
+    }
+
+    if row < max_row {
+        neighbors.push(Position { row: row + 1, col });
+    
+        if col > 0 {
+           neighbors.push(Position { row: row + 1, col: col - 1 });
+        }
+        if col < max_col {
+           neighbors.push(Position { row: row + 1, col: col + 1 });
+        }
+    }
+
+    if col > 0 {
+        neighbors.push(Position { row, col: col - 1 });
+    }
+
+    if col < max_col {
+        neighbors.push(Position { row, col: col + 1 });
+    }
+
+    return neighbors;
+}
+
+
 // fn plantMines( coordinates: HashMap<String, (usize, usize)>, board: Vec<Vec<Cell>>) {
 //   for position in coordinates.into_iter() {
 //     let (_, (row, col)) = position;
