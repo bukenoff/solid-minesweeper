@@ -4,9 +4,9 @@
 use std::collections::HashMap;
 
 use rand::Rng;
+use serde::Serialize;
 
-
-#[derive(Debug)]
+#[derive(Serialize)]
 struct Cell {
     row: usize,
     col: usize,
@@ -40,12 +40,12 @@ fn make_empty_board(rows: usize, cols: usize)-> Vec<Vec<Cell>> {
     return board;
 }
 
-struct Position {
+struct CellPosition {
     row: usize,
     col: usize,
 }
 
-fn get_mines_coordinates(rows: usize, cols: usize, count: usize, first_click: Position ) -> HashMap<String, (usize, usize)>  {
+fn get_mines_coordinates(rows: usize, cols: usize, count: usize, first_click: CellPosition) -> HashMap<String, (usize, usize)>  {
     let mut coordinates: HashMap<String, (usize, usize)> = HashMap::with_capacity(count);
     let mut mines_left = count;
 
@@ -68,37 +68,37 @@ fn get_mines_coordinates(rows: usize, cols: usize, count: usize, first_click: Po
 }
 
 // TODO: This is kind of verbose, find a way to simplify it
-fn get_neighbor_cells(row: usize, col: usize, max_row: usize, max_col: usize) -> Vec<Position> {
-    let mut neighbors: Vec<Position> = Vec::new();
+fn get_neighbor_cells(row: usize, col: usize, max_row: usize, max_col: usize) -> Vec<CellPosition> {
+    let mut neighbors: Vec<CellPosition> = Vec::new();
 
     if row > 0 {
-        neighbors.push(Position { row: row - 1, col });
+        neighbors.push(CellPosition { row: row - 1, col });
     
         if col > 0 {
-           neighbors.push(Position { row: row - 1, col: col - 1 });
+           neighbors.push(CellPosition { row: row - 1, col: col - 1 });
         }
         if col < max_col {
-           neighbors.push(Position { row: row - 1, col: col + 1 });
+           neighbors.push(CellPosition { row: row - 1, col: col + 1 });
         }
     }
 
     if row < max_row {
-        neighbors.push(Position { row: row + 1, col });
+        neighbors.push(CellPosition { row: row + 1, col });
     
         if col > 0 {
-           neighbors.push(Position { row: row + 1, col: col - 1 });
+           neighbors.push(CellPosition { row: row + 1, col: col - 1 });
         }
         if col < max_col {
-           neighbors.push(Position { row: row + 1, col: col + 1 });
+           neighbors.push(CellPosition { row: row + 1, col: col + 1 });
         }
     }
 
     if col > 0 {
-        neighbors.push(Position { row, col: col - 1 });
+        neighbors.push(CellPosition { row, col: col - 1 });
     }
 
     if col < max_col {
-        neighbors.push(Position { row, col: col + 1 });
+        neighbors.push(CellPosition { row, col: col + 1 });
     }
 
     return neighbors;
@@ -132,16 +132,24 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+#[tauri::command]
+fn get_empty_board(rows: usize, cols: usize)->Vec<Vec<Cell>>{
+    return make_empty_board(rows, cols);
+}
+
+#[tauri::command]
+fn get_full_board(rows: usize, cols: usize, mines_count: usize, first_click_row: usize, first_click_col: usize) -> String {
+    let mut empty_board = make_empty_board(rows, cols);
+    let coordinates = get_mines_coordinates(rows, cols, mines_count, CellPosition {row: first_click_row, col: first_click_col} );
+    let full_board = plant_mines(coordinates, &mut empty_board);
+    let json = serde_json::to_string(&full_board).unwrap();
+
+    return json;
+}
+
 fn main() {
-    let mut empty_board = make_empty_board(9, 9);
-    let coordinates = get_mines_coordinates(9, 9, 9, Position{row:1,col:1});
-
-    let new_board = plant_mines(coordinates, &mut empty_board);
-
-    println!("board is {:?}", new_board);
-
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, get_empty_board, get_full_board])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
