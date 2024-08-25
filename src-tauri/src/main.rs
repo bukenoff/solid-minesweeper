@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::collections::HashSet;
+use std::collections::{HashMap};
 
 use rand::Rng;
 
@@ -43,26 +43,47 @@ struct Position {
     col: usize,
 }
 
-fn get_mines_coordinates(rows: usize, cols: usize, mut count: usize, first_click: Position ) -> HashSet<String>  {
-    let mut coordinates: HashSet<String> = HashSet::with_capacity(count);
+fn get_mines_coordinates(rows: usize, cols: usize, count: usize, first_click: Position ) -> HashMap<String, (usize, usize)>  {
+    let mut coordinates: HashMap<String, (usize, usize)> = HashMap::with_capacity(count);
+    let mut mines_left = count;
 
-    while count > 0 {
+    while mines_left  > 0 {
        let random_row = rand::thread_rng().gen_range(0..rows);
        let random_col = rand::thread_rng().gen_range(0..cols); 
        
        let random_position = format!("{}-{}", random_row, random_col);
   
-       if coordinates.contains(&random_position) || (random_row == first_click.row && random_col == first_click.col) {
+       if coordinates.contains_key(&random_position) || (random_row == first_click.row && random_col == first_click.col) {
             continue;
        }
 
-       coordinates.insert(random_position);
+       coordinates.insert(random_position, (random_row, random_col));
      
-       count -= 1;
+       mines_left  -= 1;
    }
 
    return coordinates;
 }
+
+// fn plantMines( coordinates: HashMap<String, (usize, usize)>, board: Vec<Vec<Cell>>) {
+//   for position in coordinates.into_iter() {
+//     let (_, (row, col)) = position;
+//     let neighbors = (+row, +col, board);
+//
+//     neighbors.forEach((position) => {
+//       if (board[position.row][position.col].has_bomb) return;
+//
+//       setBoard(
+//         position.row,
+//         position.col,
+//         "bombs_around",
+//         board[position.row][position.col].bombs_around + 1
+//       );
+//     });
+//
+//     setBoard(+row, +col, "has_bomb", true);
+//   }
+// }
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
