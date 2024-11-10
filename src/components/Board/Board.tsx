@@ -23,7 +23,7 @@ export function Board() {
   return (
     <BoardProvider>
       <div class={styles["container"]}>
-        <SettingsPanel difficulty={setup} changeDifficulty={changeDifficulty} />
+        <SettingsPanel setup={setup} changeDifficulty={changeDifficulty} />
         <ProgressPanel restart={restart} minesLeft={minesLeft} time={time} />
         <div class={styles["rows"]}>
           <Show when={status() === "loss" || status() === "victory"}>
