@@ -15,13 +15,20 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "window": {
+        "setSize": true
       }
     },
     "windows": [
       {
         "title": "tauri-test",
-        "width": 800,
-        "height": 600
+        "width": 240,
+        "height": 320,
+        "maxWidth": 740,
+        "maxHeight": 480,
+        "fullscreen": false,
+        "resizable": false
       }
     ],
     "security": {

@@ -5,6 +5,7 @@ import {
   JSXElement,
 } from "solid-js";
 import { createStore } from "solid-js/store";
+import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
 import { DIFFICULTY } from "../const/board";
 import type { BoardType, GameStatus } from "../models";
@@ -14,6 +15,15 @@ import {
   makeEmptyBoard,
   plantMines,
 } from "../utils/board";
+
+const WINDOW_SIZES: Record<
+  keyof typeof DIFFICULTY,
+  { width: number; height: number }
+> = {
+  easy: { width: 240, height: 320 },
+  normal: { width: 400, height: 480 },
+  hard: { width: 740, height: 480 },
+};
 
 export const BoardContext = createContext<any>();
 
@@ -94,6 +104,9 @@ export function BoardProvider(props: { children: JSXElement }) {
   }
 
   function changeDifficulty(key: keyof typeof DIFFICULTY) {
+    appWindow.setSize(
+      new LogicalSize(WINDOW_SIZES[key].width, WINDOW_SIZES[key].height)
+    );
     setDifficulty(DIFFICULTY[key]);
     restart();
   }
