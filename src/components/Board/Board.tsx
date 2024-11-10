@@ -16,6 +16,7 @@ export function Board() {
     minesLeft,
     time,
     difficulty,
+    current,
     { openCell, flagCell, restart, changeDifficulty },
   ] = useBoard();
 
@@ -49,6 +50,7 @@ export function Board() {
                       is_flagged={cell.is_flagged}
                       row={cell.row}
                       col={cell.col}
+                      current={current}
                       onOpen={openCell}
                       flagCell={flagCell}
                     />

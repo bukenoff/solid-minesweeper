@@ -1,8 +1,10 @@
 import {
+  Accessor,
   createContext,
   createEffect,
   createSignal,
   JSXElement,
+  onCleanup,
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
@@ -25,9 +27,21 @@ const WINDOW_SIZES: Record<
   hard: { width: 740, height: 480 },
 };
 
-export const BoardContext = createContext<any>();
+export const BoardContext =
+  createContext<
+    readonly [
+      BoardType,
+      Accessor<GameStatus>,
+      Accessor<number>,
+      Accessor<number>,
+      Accessor<(typeof DIFFICULTY)[keyof typeof DIFFICULTY]>,
+      Accessor<{ row: number; col: number }>,
+      any
+    ]
+  >();
 
 export function BoardProvider(props: { children: JSXElement }) {
+  const [current, setCurrent] = createSignal({ row: 0, col: 0 });
   const [difficulty, setDifficulty] = createSignal(DIFFICULTY["easy"]);
   const [board, setBoard] = createStore(
     makeEmptyBoard(difficulty().rows, difficulty().cols)
@@ -117,13 +131,57 @@ export function BoardProvider(props: { children: JSXElement }) {
     minesLeft,
     time,
     difficulty,
+    current,
     {
       openCell,
       restart,
       flagCell,
       changeDifficulty,
     },
-  ];
+  ] as const;
+
+  createEffect(() => {
+    const maxRow = difficulty().rows;
+    const maxCol = difficulty().cols;
+
+    const handleKeyDown = (event: any) => {
+      console.log("event key", event.key);
+      switch (event.key) {
+        case "k":
+          setCurrent({
+            row: Math.max(current().row - 1, 0),
+            col: current().col,
+          });
+          break;
+        case "j":
+          setCurrent({ row: (current().row + 1) % maxRow, col: current().col });
+          break;
+        case "h":
+          setCurrent({
+            row: current().row,
+            col: Math.max(current().col - 1, 0),
+          });
+          break;
+        case "l":
+          setCurrent({ row: current().row, col: (current().col + 1) % maxCol });
+          break;
+        case "r":
+          restart();
+          break;
+        case " ":
+          openCell(current().row, current().col);
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    onCleanup(() => {
+      window.removeEventListener("keydown", handleKeyDown);
+    });
+  });
 
   return (
     <BoardContext.Provider value={value}>

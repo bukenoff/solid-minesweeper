@@ -1,4 +1,4 @@
-import { createSignal, Show } from "solid-js";
+import { Accessor, createSignal, Show } from "solid-js";
 
 import { getColor } from "../../utils/helpers";
 
@@ -11,6 +11,7 @@ type CellProps = {
   is_flagged?: boolean;
   row: number;
   col: number;
+  current: Accessor<{ row: number; col: number }>;
   onOpen: (row: number, col: number) => void;
   flagCell: (row: number, col: number, flagged: boolean) => void;
 };
@@ -38,6 +39,9 @@ export function Cell(props: CellProps) {
         [styles["open"]]: props.is_open,
         [styles["exploded"]]: exploded(),
         [styles["flagged"]]: props.is_flagged,
+        [styles["current"]]:
+          props.current().row === props.row &&
+          props.current().col === props.col,
       }}
       onClick={onClick}
       onContextMenu={onContextMenu}
