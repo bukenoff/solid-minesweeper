@@ -23,12 +23,13 @@
 }
 
 .exploded {
-  background-image: url(https://cardgames.io/minesweeper/images/mine.svg);
+  background-image: url("../../assets/mine.svg");
 }
 
 .flagged {
-  background-image: url(https://cardgames.io/minesweeper/images/flag.svg);
+  background-image: url("../../assets/flag.svg");
 }
+
 .flagged:active {
   transform: none;
 }

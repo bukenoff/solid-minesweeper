@@ -53,6 +53,7 @@ export function Board() {
                       current={current}
                       onOpen={openCell}
                       flagCell={flagCell}
+                      status={status}
                     />
                   )}
                 </For>

@@ -55,10 +55,6 @@ export function BoardProvider(props: { children: JSXElement }) {
   const [time, setTime] = createSignal(0);
   let intervalId: NodeJS.Timeout;
 
-  createEffect(() => {
-    if (!cellsLeft() && status() === "playing") endGame("victory");
-  });
-
   function startGame(row: number, col: number, board: BoardType) {
     plantMines(
       getMinesCoordinates(
@@ -88,6 +84,7 @@ export function BoardProvider(props: { children: JSXElement }) {
 
   function openCell(row: number, col: number) {
     const clickedCell = board[row][col];
+
     if (status() === "pending") startGame(row, col, board);
 
     if (status() === "loss" || clickedCell.is_open || clickedCell.is_flagged)
@@ -150,6 +147,10 @@ export function BoardProvider(props: { children: JSXElement }) {
       changeDifficulty,
     },
   ] as const;
+
+  createEffect(() => {
+    if (!cellsLeft() && status() === "playing") endGame("victory");
+  });
 
   createEffect(() => {
     const maxRow = difficulty().rows - 1;

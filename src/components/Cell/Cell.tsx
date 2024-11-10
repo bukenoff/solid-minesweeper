@@ -1,8 +1,9 @@
-import { Accessor, createSignal, Show } from "solid-js";
-
-import { getColor } from "../../utils/helpers";
+import { Accessor, Show } from "solid-js";
 
 import styles from "./Cell.module.css";
+
+import type { GameStatus } from "../../models";
+import { getColor } from "../../utils/helpers";
 
 type CellProps = {
   has_bomb: boolean;
@@ -12,17 +13,15 @@ type CellProps = {
   row: number;
   col: number;
   current: Accessor<{ row: number; col: number }>;
+  status: Accessor<GameStatus>;
   onOpen: (row: number, col: number) => void;
   flagCell: (row: number, col: number, flagged: boolean) => void;
 };
 
 export function Cell(props: CellProps) {
-  const [exploded, setExploded] = createSignal(false);
-
   const onClick = () => {
     if (props.is_open || props.is_flagged) return;
     props.onOpen(props.row, props.col);
-    props.has_bomb && !exploded() && setExploded(true);
   };
 
   const onContextMenu = (e: MouseEvent) => {
@@ -37,7 +36,7 @@ export function Cell(props: CellProps) {
       class={styles["container"]}
       classList={{
         [styles["open"]]: props.is_open,
-        [styles["exploded"]]: exploded(),
+        [styles["exploded"]]: props.has_bomb && props.status() === "loss",
         [styles["flagged"]]: props.is_flagged,
         [styles["current"]]:
           props.current().row === props.row &&
