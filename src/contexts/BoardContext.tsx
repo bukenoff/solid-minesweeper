@@ -98,6 +98,10 @@ export function BoardProvider(props: { children: JSXElement }) {
   }
 
   function flagCell(row: number, col: number, flagged: boolean) {
+    const clickedCell = board[row][col];
+
+    if (status() === "loss" || clickedCell.is_open) return;
+
     setMinesLeft((count) => {
       if (flagged) {
         setBoard(row, col, "is_flagged", true);
@@ -172,6 +176,10 @@ export function BoardProvider(props: { children: JSXElement }) {
           break;
         case "r":
           restart();
+          break;
+        case "m":
+          const is_flagged = board[current().row][current().col].is_flagged;
+          flagCell(current().row, current().col, !is_flagged);
           break;
         case " ":
           openCell(current().row, current().col);
