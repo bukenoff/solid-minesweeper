@@ -70,9 +70,6 @@ export function BoardProvider(props: { children: JSXElement }) {
     if (status === "victory") {
       showNotification("You won!", `Your time is ${time()}`);
     }
-    if (status === "loss") {
-      showNotification("You lost!", `Better luck next time`);
-    }
     setStatus(status);
     intervalId && clearInterval(intervalId);
   }
