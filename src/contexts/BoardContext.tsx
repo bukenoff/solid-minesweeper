@@ -17,6 +17,7 @@ import {
   makeEmptyBoard,
   plantMines,
 } from "../utils/board";
+import { showNotification } from "../utils/misc";
 
 const WINDOW_SIZES: Record<
   keyof typeof DIFFICULTY,
@@ -75,6 +76,12 @@ export function BoardProvider(props: { children: JSXElement }) {
   }
 
   function endGame(status: GameStatus) {
+    if (status === "victory") {
+      showNotification("You won!", `Your time is ${time()}`);
+    }
+    if (status === "loss") {
+      showNotification("You lost!", `Better luck next time`);
+    }
     setStatus(status);
     intervalId && clearInterval(intervalId);
   }
