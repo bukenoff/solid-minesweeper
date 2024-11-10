@@ -141,11 +141,10 @@ export function BoardProvider(props: { children: JSXElement }) {
   ] as const;
 
   createEffect(() => {
-    const maxRow = difficulty().rows;
-    const maxCol = difficulty().cols;
+    const maxRow = difficulty().rows - 1;
+    const maxCol = difficulty().cols - 1;
 
     const handleKeyDown = (event: any) => {
-      console.log("event key", event.key);
       switch (event.key) {
         case "k":
           setCurrent({
@@ -154,7 +153,10 @@ export function BoardProvider(props: { children: JSXElement }) {
           });
           break;
         case "j":
-          setCurrent({ row: (current().row + 1) % maxRow, col: current().col });
+          setCurrent({
+            row: Math.min(current().row + 1, maxRow),
+            col: current().col,
+          });
           break;
         case "h":
           setCurrent({
@@ -163,7 +165,10 @@ export function BoardProvider(props: { children: JSXElement }) {
           });
           break;
         case "l":
-          setCurrent({ row: current().row, col: (current().col + 1) % maxCol });
+          setCurrent({
+            row: current().row,
+            col: Math.min(current().col + 1, maxCol),
+          });
           break;
         case "r":
           restart();
