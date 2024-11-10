@@ -9,8 +9,8 @@ import {
 import { createStore } from "solid-js/store";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 
-import { DIFFICULTY } from "../const/board";
-import type { BoardType, GameStatus } from "../models";
+import { SETUPS_BY_DIFFICULTY } from "../const/board";
+import type { BoardType, Difficulty, GameSetup, GameStatus } from "../models";
 import { getNeighborCells } from "../utils";
 import {
   getMinesCoordinates,
@@ -19,10 +19,7 @@ import {
 } from "../utils/board";
 import { showNotification } from "../utils/misc";
 
-const WINDOW_SIZES: Record<
-  keyof typeof DIFFICULTY,
-  { width: number; height: number }
-> = {
+const WINDOW_SIZES: Record<Difficulty, { width: number; height: number }> = {
   easy: { width: 240, height: 320 },
   normal: { width: 400, height: 480 },
   hard: { width: 740, height: 480 },
@@ -35,7 +32,7 @@ export const BoardContext =
       Accessor<GameStatus>,
       Accessor<number>,
       Accessor<number>,
-      Accessor<(typeof DIFFICULTY)[keyof typeof DIFFICULTY]>,
+      Accessor<GameSetup>,
       Accessor<{ row: number; col: number }>,
       any
     ]
@@ -43,26 +40,24 @@ export const BoardContext =
 
 export function BoardProvider(props: { children: JSXElement }) {
   const [current, setCurrent] = createSignal({ row: 0, col: 0 });
-  const [difficulty, setDifficulty] = createSignal(DIFFICULTY["easy"]);
+  const [setup, setSetup] = createSignal(SETUPS_BY_DIFFICULTY["easy"]);
   const [board, setBoard] = createStore(
-    makeEmptyBoard(difficulty().rows, difficulty().cols)
+    makeEmptyBoard(setup().rows, setup().cols)
   );
   const [status, setStatus] = createSignal<GameStatus>("pending");
-  const [minesLeft, setMinesLeft] = createSignal(difficulty().mines);
+  const [minesLeft, setMinesLeft] = createSignal(setup().mines);
   const [cellsLeft, setCellsLeft] = createSignal(
-    difficulty().rows * difficulty().cols - difficulty().mines
+    setup().rows * setup().cols - setup().mines
   );
   const [time, setTime] = createSignal(0);
   let intervalId: NodeJS.Timeout;
 
   function startGame(row: number, col: number, board: BoardType) {
     plantMines(
-      getMinesCoordinates(
-        difficulty().rows,
-        difficulty().cols,
-        difficulty().mines,
-        { row, col }
-      ),
+      getMinesCoordinates(setup().rows, setup().cols, setup().mines, {
+        row,
+        col,
+      }),
       setBoard,
       board
     );
@@ -118,18 +113,18 @@ export function BoardProvider(props: { children: JSXElement }) {
 
   function restart() {
     setStatus("pending");
-    setBoard(makeEmptyBoard(difficulty().rows, difficulty().cols));
-    setMinesLeft(difficulty().mines);
+    setBoard(makeEmptyBoard(setup().rows, setup().cols));
+    setMinesLeft(setup().mines);
     setTime(0);
-    setCellsLeft(difficulty().rows * difficulty().cols - difficulty().mines);
+    setCellsLeft(setup().rows * setup().cols - setup().mines);
     intervalId && clearInterval(intervalId);
   }
 
-  function changeDifficulty(key: keyof typeof DIFFICULTY) {
+  function changeDifficulty(key: Difficulty) {
     appWindow.setSize(
       new LogicalSize(WINDOW_SIZES[key].width, WINDOW_SIZES[key].height)
     );
-    setDifficulty(DIFFICULTY[key]);
+    setSetup(SETUPS_BY_DIFFICULTY[key]);
     restart();
   }
 
@@ -138,7 +133,7 @@ export function BoardProvider(props: { children: JSXElement }) {
     status,
     minesLeft,
     time,
-    difficulty,
+    setup,
     current,
     {
       openCell,
@@ -153,8 +148,8 @@ export function BoardProvider(props: { children: JSXElement }) {
   });
 
   createEffect(() => {
-    const maxRow = difficulty().rows - 1;
-    const maxCol = difficulty().cols - 1;
+    const maxRow = setup().rows - 1;
+    const maxCol = setup().cols - 1;
 
     const handleKeyDown = (event: any) => {
       switch (event.key) {

@@ -15,7 +15,7 @@ export function Board() {
     status,
     minesLeft,
     time,
-    difficulty,
+    setup,
     current,
     { openCell, flagCell, restart, changeDifficulty },
   ] = useBoard();
@@ -23,10 +23,7 @@ export function Board() {
   return (
     <BoardProvider>
       <div class={styles["container"]}>
-        <SettingsPanel
-          difficulty={difficulty}
-          changeDifficulty={changeDifficulty}
-        />
+        <SettingsPanel difficulty={setup} changeDifficulty={changeDifficulty} />
         <ProgressPanel restart={restart} minesLeft={minesLeft} time={time} />
         <div class={styles["rows"]}>
           <Show when={status() === "loss" || status() === "victory"}>

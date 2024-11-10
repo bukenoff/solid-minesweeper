@@ -10,3 +10,12 @@ export type CellType = {
 export type BoardType = CellType[][];
 
 export type GameStatus = "pending" | "playing" | "victory" | "loss";
+
+export type Difficulty = "easy" | "normal" | "hard";
+
+export type GameSetup = {
+  cols: number;
+  rows: number;
+  mines: number;
+  key: string;
+};

@@ -1,4 +1,6 @@
-export const DIFFICULTY = {
+import type { Difficulty, GameSetup } from "../models";
+
+export const SETUPS_BY_DIFFICULTY: Record<Difficulty, GameSetup> = {
   easy: {
     cols: 9,
     rows: 9,

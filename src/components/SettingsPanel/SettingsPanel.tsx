@@ -1,7 +1,8 @@
 import type { Accessor, JSX } from "solid-js";
+import type { GameSetup } from "../../models";
 
 type SettingsPanelProps = {
-  difficulty: Accessor<any>;
+  setup: Accessor<GameSetup>;
   changeDifficulty: (key: string) => void;
 };
 
@@ -14,7 +15,7 @@ export function SettingsPanel(props: SettingsPanelProps) {
       <select
         name="difficulty"
         id="difficulty"
-        value={props.difficulty().key}
+        value={props.setup().key}
         onchange={onChange}
       >
         <option value="easy">Easy</option>
