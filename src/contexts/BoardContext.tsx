@@ -150,6 +150,19 @@ export function BoardProvider(props: { children: JSXElement }) {
 
     const handleKeyDown = (event: any) => {
       switch (event.key) {
+        case "0":
+          setCurrent({
+            row: current().row,
+            col: 0,
+          });
+          break;
+        case "$":
+          setCurrent({
+            row: current().row,
+            col: maxCol,
+          });
+          break;
+
         case "k":
           setCurrent({
             row: Math.max(current().row - 1, 0),
