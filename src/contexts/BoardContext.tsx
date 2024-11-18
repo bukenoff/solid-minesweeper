@@ -7,7 +7,7 @@ import {
   onCleanup,
 } from "solid-js";
 import { createStore } from "solid-js/store";
-import { appWindow, LogicalSize } from "@tauri-apps/api/window";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 
 import { SETUPS_BY_DIFFICULTY } from "../const/board";
 import type { BoardType, Difficulty, GameSetup, GameStatus } from "../models";
@@ -18,6 +18,9 @@ import {
   plantMines,
 } from "../utils/board";
 import { showNotification } from "../utils/misc";
+import { LogicalSize } from "@tauri-apps/api/window";
+
+const appWindow = getCurrentWebviewWindow();
 
 const WINDOW_SIZES: Record<Difficulty, { width: number; height: number }> = {
   easy: { width: 240, height: 320 },

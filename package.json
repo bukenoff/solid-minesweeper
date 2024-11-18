@@ -14,11 +14,13 @@
   "license": "MIT",
   "dependencies": {
     "@solidjs/router": "^0.14.3",
-    "@tauri-apps/api": "^1",
+    "@tauri-apps/api": "^2.1.1",
+    "@tauri-apps/plugin-notification": "~2",
+    "@tauri-apps/plugin-shell": "~2",
     "solid-js": "1.8.4"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1",
+    "@tauri-apps/cli": "^2.1.0",
     "@types/node": "^18.17.5",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
