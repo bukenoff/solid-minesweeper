@@ -19,6 +19,7 @@ import {
 } from "../utils/board";
 import { showNotification } from "../utils/misc";
 import { LogicalSize } from "@tauri-apps/api/window";
+import { invoke } from "@tauri-apps/api/core";
 
 const appWindow = getCurrentWebviewWindow();
 
@@ -144,7 +145,18 @@ export function BoardProvider(props: { children: JSXElement }) {
   ] as const;
 
   createEffect(() => {
-    if (!cellsLeft() && status() === "playing") endGame("victory");
+    if (!cellsLeft() && status() === "playing") {
+      endGame("victory");
+      invoke("get_scores").then((data) => console.log("data is", data));
+      invoke<{ time: number }>("get_last_score").then((score) => {
+        if (score.time > time()) {
+          invoke("add_score", {
+            name: "current dude",
+            scoreTime: time(),
+          });
+        }
+      });
+    }
   });
 
   createEffect(() => {
