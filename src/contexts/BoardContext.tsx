@@ -29,18 +29,19 @@ const WINDOW_SIZES: Record<Difficulty, { width: number; height: number }> = {
   hard: { width: 740, height: 480 },
 };
 
-export const BoardContext =
-  createContext<
-    readonly [
-      BoardType,
-      Accessor<GameStatus>,
-      Accessor<number>,
-      Accessor<number>,
-      Accessor<GameSetup>,
-      Accessor<{ row: number; col: number }>,
-      any
-    ]
-  >();
+export const BoardContext = createContext<{
+  board: BoardType;
+  status: Accessor<GameStatus>;
+  minesLeft: Accessor<number>;
+  time: Accessor<number>;
+  setup: Accessor<GameSetup>;
+  current: Accessor<{ row: number; col: number }>;
+  isEnteringScore: Accessor<boolean>;
+  openCell: (row: number, col: number) => void;
+  restart: () => void;
+  flagCell: (row: number, col: number, flagged: boolean) => void;
+  changeDifficulty: (key: Difficulty) => void;
+}>();
 
 export function BoardProvider(props: { children: JSXElement }) {
   const [current, setCurrent] = createSignal({ row: 0, col: 0 });
@@ -54,6 +55,8 @@ export function BoardProvider(props: { children: JSXElement }) {
     setup().rows * setup().cols - setup().mines
   );
   const [time, setTime] = createSignal(0);
+  const [isEnteringScore, setEnteringScore] = createSignal(false);
+
   let intervalId: NodeJS.Timeout;
 
   function startGame(row: number, col: number, board: BoardType) {
@@ -129,31 +132,14 @@ export function BoardProvider(props: { children: JSXElement }) {
     restart();
   }
 
-  const value = [
-    board,
-    status,
-    minesLeft,
-    time,
-    setup,
-    current,
-    {
-      openCell,
-      restart,
-      flagCell,
-      changeDifficulty,
-    },
-  ] as const;
-
   createEffect(() => {
     if (!cellsLeft() && status() === "playing") {
       endGame("victory");
       invoke("get_scores").then((data) => console.log("data is", data));
       invoke<{ time: number }>("get_last_score").then((score) => {
         if (score.time > time()) {
-          invoke("add_score", {
-            name: "current dude",
-            scoreTime: time(),
-          });
+          console.log("score is", score);
+          setEnteringScore(true);
         }
       });
     }
@@ -225,7 +211,21 @@ export function BoardProvider(props: { children: JSXElement }) {
   });
 
   return (
-    <BoardContext.Provider value={value}>
+    <BoardContext.Provider
+      value={{
+        board,
+        status,
+        minesLeft,
+        time,
+        setup,
+        current,
+        isEnteringScore,
+        openCell,
+        restart,
+        flagCell,
+        changeDifficulty,
+      }}
+    >
       {props.children}
     </BoardContext.Provider>
   );

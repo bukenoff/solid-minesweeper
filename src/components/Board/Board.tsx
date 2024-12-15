@@ -8,23 +8,29 @@ import { Cell } from "../Cell";
 import { Row } from "../Row";
 import { ProgressPanel } from "../ProgressPanel";
 import { SettingsPanel } from "../SettingsPanel";
+import { AddScore } from "../AddScore";
 
 export function Board() {
-  const [
+  const {
     board,
     status,
     minesLeft,
     time,
     setup,
     current,
-    { openCell, flagCell, restart, changeDifficulty },
-  ] = useBoard();
+    isEnteringScore,
+    openCell,
+    flagCell,
+    restart,
+    changeDifficulty,
+  } = useBoard();
 
   return (
     <BoardProvider>
       <div class={styles["container"]}>
         <SettingsPanel setup={setup} changeDifficulty={changeDifficulty} />
         <ProgressPanel restart={restart} minesLeft={minesLeft} time={time} />
+        <AddScore time={time} isEnteringScore={isEnteringScore} />
         <div class={styles["rows"]}>
           <Show when={status() === "loss" || status() === "victory"}>
             <div

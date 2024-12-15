@@ -1,14 +1,14 @@
 import type { Accessor, JSX } from "solid-js";
-import type { GameSetup } from "../../models";
+import type { Difficulty, GameSetup } from "../../models";
 
 type SettingsPanelProps = {
   setup: Accessor<GameSetup>;
-  changeDifficulty: (key: string) => void;
+  changeDifficulty: (key: Difficulty) => void;
 };
 
 export function SettingsPanel(props: SettingsPanelProps) {
   const onChange: JSX.EventHandlerUnion<HTMLSelectElement, Event> = (e) =>
-    props.changeDifficulty(e.currentTarget.value);
+    props.changeDifficulty(e.currentTarget.value as Difficulty);
 
   return (
     <div>
