@@ -23,6 +23,7 @@ export function Board() {
     flagCell,
     restart,
     changeDifficulty,
+    setEnteringScore,
   } = useBoard();
 
   return (
@@ -30,7 +31,11 @@ export function Board() {
       <div class={styles["container"]}>
         <SettingsPanel setup={setup} changeDifficulty={changeDifficulty} />
         <ProgressPanel restart={restart} minesLeft={minesLeft} time={time} />
-        <AddScore time={time} isEnteringScore={isEnteringScore} />
+        <AddScore
+          time={time}
+          isEnteringScore={isEnteringScore}
+          setEnteringScore={setEnteringScore}
+        />
         <div class={styles["rows"]}>
           <Show when={status() === "loss" || status() === "victory"}>
             <div

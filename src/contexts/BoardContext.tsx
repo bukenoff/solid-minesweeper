@@ -5,6 +5,7 @@ import {
   createSignal,
   JSXElement,
   onCleanup,
+  Setter,
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
@@ -41,6 +42,7 @@ export const BoardContext = createContext<{
   restart: () => void;
   flagCell: (row: number, col: number, flagged: boolean) => void;
   changeDifficulty: (key: Difficulty) => void;
+  setEnteringScore: Setter<boolean>;
 }>();
 
 export function BoardProvider(props: { children: JSXElement }) {
@@ -138,7 +140,6 @@ export function BoardProvider(props: { children: JSXElement }) {
       invoke("get_scores").then((data) => console.log("data is", data));
       invoke<{ time: number }>("get_last_score").then((score) => {
         if (score.time > time()) {
-          console.log("score is", score);
           setEnteringScore(true);
         }
       });
@@ -150,6 +151,8 @@ export function BoardProvider(props: { children: JSXElement }) {
     const maxCol = setup().cols - 1;
 
     const handleKeyDown = (event: any) => {
+      if (isEnteringScore()) return;
+
       switch (event.key) {
         case "0":
           setCurrent({
@@ -224,6 +227,7 @@ export function BoardProvider(props: { children: JSXElement }) {
         restart,
         flagCell,
         changeDifficulty,
+        setEnteringScore,
       }}
     >
       {props.children}
