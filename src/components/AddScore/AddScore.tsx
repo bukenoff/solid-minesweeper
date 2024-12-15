@@ -31,6 +31,7 @@ export function AddScore(props: AddScoreProps) {
         <div>
           <label for="name">Name:</label>
           <input
+            autofocus
             type="text"
             id="name"
             name="user_name"
