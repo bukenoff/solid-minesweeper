@@ -11,7 +11,7 @@ export function ProgressPanel(props: ProgressPanelProps) {
   return (
     <div class={styles["container"]}>
       <span>{props.minesLeft()}</span>
-      <button onClick={props.restart}>r</button>
+      <button onClick={props.restart}>restart</button>
       <span>{props.time()}</span>
     </div>
   );

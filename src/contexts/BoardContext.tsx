@@ -137,7 +137,6 @@ export function BoardProvider(props: { children: JSXElement }) {
   createEffect(() => {
     if (!cellsLeft() && status() === "playing") {
       endGame("victory");
-      invoke("get_scores").then((data) => console.log("data is", data));
       invoke<{ time: number }>("get_last_score").then((score) => {
         if (score.time > time()) {
           setEnteringScore(true);

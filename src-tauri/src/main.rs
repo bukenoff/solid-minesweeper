@@ -123,7 +123,7 @@ fn get_scores(app_handle: tauri::AppHandle) -> Result<serde_json::Value , String
                                 { "name": "John Doe", "time": 6 },
                                 { "name": "Abraham Lincoln", "time": 7 },
                                 { "name": "whatever", "time": 8 },
-                                { "name": "last guy", "time": 9 },
+                                { "name": "last guy", "time": 99 },
                             ] 
                         });
                         let serialized_data = serde_json::to_string_pretty(&initial_data).unwrap();

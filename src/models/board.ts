@@ -19,3 +19,8 @@ export type GameSetup = {
   mines: number;
   key: string;
 };
+
+export type Score = {
+  name: string;
+  time: number;
+};
