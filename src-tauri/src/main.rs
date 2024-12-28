@@ -12,7 +12,7 @@ fn add_score(app_handle: tauri::AppHandle, name:String, score_time: u64) -> Resu
         Ok(path)=>{
             let scores_path = path.join("scores.json");
 
-            match File::open(scores_path.clone()){
+            match File::open(&scores_path){
                 Ok(file) => {
                     let mut json_response:serde_json::Value=serde_json::from_reader(&file).expect("File should be proper json");
 
@@ -29,7 +29,7 @@ fn add_score(app_handle: tauri::AppHandle, name:String, score_time: u64) -> Resu
 
                     match serde_json::to_string_pretty(&json_response){
                         Ok(updated_json) => {
-                            fs::write(scores_path,updated_json).unwrap();
+                            fs::write(scores_path, updated_json).unwrap();
                             Ok(())
                         },
                         Err(error) => {
