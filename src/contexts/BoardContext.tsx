@@ -146,6 +146,7 @@ export function BoardProvider(props: { children: JSXElement }) {
   });
 
   createEffect(() => {
+    let pressed: string[] = [];
     const maxRow = setup().rows - 1;
     const maxCol = setup().cols - 1;
 
@@ -163,6 +164,25 @@ export function BoardProvider(props: { children: JSXElement }) {
           setCurrent({
             row: current().row,
             col: maxCol,
+          });
+          break;
+
+        case "g":
+          if (pressed.includes("g")) {
+            setCurrent({
+              row: 0,
+              col: current().col,
+            });
+            pressed = [];
+          } else {
+            pressed.push("g");
+          }
+          break;
+
+        case "G":
+          setCurrent({
+            row: maxRow,
+            col: current().col,
           });
           break;
 
