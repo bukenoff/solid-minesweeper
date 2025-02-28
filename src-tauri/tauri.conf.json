@@ -7,6 +7,7 @@
   },
   "bundle": {
     "active": true,
+    "createUpdaterArtifacts": true,
     "targets": "all",
     "icon": [
       "icons/32x32.png",
@@ -20,7 +21,15 @@
   "mainBinaryName": "tauri-test",
   "version": "0.1.0",
   "identifier": "com.tauri-test.app",
-  "plugins": {},
+  "plugins": {
+    "updater": {
+      "pubkey": "CONTENT FROM PUBLICKEY.PEM",
+      "endpoints": [
+        "https://releases.myapp.com/{{target}}/{{arch}}/{{current_version}}",
+        "https://github.com/user/repo/releases/latest/download/latest.json"
+      ]
+    }
+  },
   "app": {
     "security": {
       "csp": null
